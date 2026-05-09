@@ -1947,6 +1947,29 @@
                 overflow: hidden;
             }
         }
+
+        @media (max-width: 680px) {
+            .nav-links li.dropdown .dropdown-content {
+                display: block !important; /* Always show dropdown items in mobile menu */
+                position: static !important;
+                box-shadow: none !important;
+                border: none !important;
+                background: rgba(0,0,0,0.02) !important;
+                padding: 5px 0 !important;
+                margin-top: 10px !important;
+                width: 100% !important;
+            }
+            
+            .nav-links li.dropdown .dropdown-content li a {
+                padding: 10px !important;
+                font-size: 11px !important;
+                border-bottom: 1px solid rgba(0,0,0,0.05);
+            }
+
+            .nav-links li.dropdown > a::after {
+                content: ''; /* Remove arrow on mobile since it's always open */
+            }
+        }
 </style>
 </head>
 
@@ -2459,17 +2482,7 @@
         }
 
         
-        // Better mobile dropdown toggle
-        document.querySelectorAll('.nav-links li.dropdown > a').forEach(dropdownLink => {
-            dropdownLink.addEventListener('click', (e) => {
-                if (window.innerWidth <= 680) {
-                    const parent = dropdownLink.parentElement;
-                    if (!parent.classList.contains('active')) {
-                        e.preventDefault();
-                        // Close other dropdowns
-                        document.querySelectorAll('.nav-links li.dropdown').forEach(d => {
-                            if (d !== parent) d.classList.remove('active');
-                        });
+        
                         parent.classList.add('active');
                     } else {
                         // If already active, allow navigation
