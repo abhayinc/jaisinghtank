@@ -2478,19 +2478,9 @@
             burger.addEventListener('click', () => {
                 navLinks.classList.toggle('open');
                 burger.classList.toggle('toggle');
+                document.body.classList.toggle('menu-open');
             });
         }
-
-        
-        
-                        parent.classList.add('active');
-                    } else {
-                        // If already active, allow navigation
-                        window.location.href = dropdownLink.href;
-                    }
-                }
-            });
-        });
 </script>
 
 
