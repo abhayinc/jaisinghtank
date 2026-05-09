@@ -2230,25 +2230,26 @@
             });
         }
 
-        // Mobile dropdown toggle
+        
+        // Better mobile dropdown toggle
         document.querySelectorAll('.nav-links li.dropdown > a').forEach(dropdownLink => {
             dropdownLink.addEventListener('click', (e) => {
                 if (window.innerWidth <= 680) {
-                    e.preventDefault();
                     const parent = dropdownLink.parentElement;
-                    parent.classList.toggle('active');
+                    if (!parent.classList.contains('active')) {
+                        e.preventDefault();
+                        // Close other dropdowns
+                        document.querySelectorAll('.nav-links li.dropdown').forEach(d => {
+                            if (d !== parent) d.classList.remove('active');
+                        });
+                        parent.classList.add('active');
+                    } else {
+                        // If already active, allow navigation
+                        window.location.href = dropdownLink.href;
+                    }
                 }
             });
         });
-
-        // Burger toggle with body scroll lock
-        if (burger) {
-            const oldBurgerCallback = burger.onclick; // Capture if needed, but we used addEventListener
-            // We'll just replace the logic or add to it
-            burger.addEventListener('click', () => {
-                document.body.classList.toggle('menu-open');
-            });
-        }
 </script>
 
 
