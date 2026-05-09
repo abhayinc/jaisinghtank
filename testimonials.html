@@ -1900,9 +1900,7 @@
 
             .nav-links li.dropdown .dropdown-content {
                 position: static;
-                display: block;
-                box-shadow: none;
-                border: none;
+                display: none; box-shadow: none; border: none;
                 text-align: center;
                 padding: 0;
                 margin-top: 10px;
@@ -1923,6 +1921,30 @@
             }
             .burger.toggle .line3 {
                 transform: rotate(45deg) translate(-5px, -5px);
+            }
+        }
+
+        /* Horizontal overflow fix */
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            position: relative;
+        }
+
+        @media (max-width: 680px) {
+            .nav-links li.dropdown .dropdown-content {
+                display: none; /* Hide by default on mobile */
+                width: 100%;
+                background: rgba(0,0,0,0.02);
+            }
+
+            .nav-links li.dropdown.active .dropdown-content {
+                
+            }
+
+            /* Prevent scroll when menu is open */
+            body.menu-open {
+                overflow: hidden;
             }
         }
 </style>
@@ -2205,6 +2227,26 @@
             burger.addEventListener('click', () => {
                 navLinks.classList.toggle('open');
                 burger.classList.toggle('toggle');
+            });
+        }
+
+        // Mobile dropdown toggle
+        document.querySelectorAll('.nav-links li.dropdown > a').forEach(dropdownLink => {
+            dropdownLink.addEventListener('click', (e) => {
+                if (window.innerWidth <= 680) {
+                    e.preventDefault();
+                    const parent = dropdownLink.parentElement;
+                    parent.classList.toggle('active');
+                }
+            });
+        });
+
+        // Burger toggle with body scroll lock
+        if (burger) {
+            const oldBurgerCallback = burger.onclick; // Capture if needed, but we used addEventListener
+            // We'll just replace the logic or add to it
+            burger.addEventListener('click', () => {
+                document.body.classList.toggle('menu-open');
             });
         }
 </script>
