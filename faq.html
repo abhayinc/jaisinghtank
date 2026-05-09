@@ -1,0 +1,2184 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trader — Resource Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&amp;family=IBM+Plex+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #ffffff;
+            --white: #111111;
+            --gray-1: #f8f9fa;
+            --gray-2: #edf2f7;
+            --gray-3: #a0aec0;
+            --gray-4: #718096;
+            --gray-5: #2d3748;
+            --accent: #d00000;
+            --accent-dim: #fff5f5;
+            --mono: 'IBM Plex Mono', monospace;
+            --sans: 'IBM Plex Sans', sans-serif;
+            --border: 1px solid #e2e8f0;
+            --border-light: 1px solid #edf2f7;
+            --glass: rgba(0, 0, 0, 0.02);
+            --glass-border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--black);
+            color: var(--gray-5);
+            font-family: var(--sans);
+            font-size: 15px;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            color: var(--white);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        a:hover {
+            color: var(--accent);
+        }
+
+        /* ─── LAYOUT ─────────────────────────────── */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 28px;
+        }
+
+        section {
+            border-bottom: var(--border);
+            padding: 64px 0;
+        }
+
+        /* ─── NAV ────────────────────────────────── */
+        #nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: var(--border);
+        }
+
+        #nav .inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 28px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .nav-logo {
+            font-family: var(--mono);
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--white);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-family: var(--mono);
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gray-4);
+            padding: 8px 16px;
+            border-radius: 4px;
+        }
+
+        .nav-links a:hover {
+            color: var(--white);
+            background: var(--glass);
+        }
+
+        /* ─── DROPDOWN ───────────────────────────── */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background: #ffffff;
+            min-width: 240px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+            border: var(--border);
+            z-index: 1001;
+            top: 100%;
+            left: 0;
+            list-style: none;
+            padding: 8px;
+            border-radius: 8px;
+        }
+
+        .dropdown-content li {
+            width: 100%;
+        }
+
+        .dropdown-content a {
+            color: var(--gray-5) !important;
+            padding: 12px 16px !important;
+            border-radius: 4px;
+            text-decoration: none;
+            display: block !important;
+            font-size: 10px !important;
+            font-family: var(--mono);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .dropdown-content a:hover {
+            background: var(--gray-1);
+            color: var(--accent) !important;
+            padding-left: 24px !important;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown>a::after {
+            content: ' ▾';
+            font-size: 9px;
+            vertical-align: middle;
+            opacity: 0.5;
+        }
+
+        /* ─── TICKER ─────────────────────────────── */
+        .ticker-wrap {
+            width: 100%;
+            overflow: hidden;
+            background: #111111;
+            /* Dark background for visibility */
+            border-bottom: var(--border);
+            height: 40px;
+        }
+
+        /* ─── HERO ───────────────────────────────── */
+        #hero {
+            padding: 100px 0 80px;
+            background: radial-gradient(circle at top right, #fff5f5, transparent 50%);
+            position: relative;
+            overflow: hidden;
+            border-bottom: var(--border);
+        }
+
+        #hero h1 {
+            font-family: var(--mono);
+            font-size: clamp(32px, 6vw, 64px);
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin-bottom: 24px;
+            color: var(--white);
+        }
+
+        #hero h1 span {
+            color: var(--accent);
+        }
+
+        .hero-warning {
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--accent);
+            padding: 24px 32px;
+            background: #fff;
+            margin-top: 48px;
+            border-radius: 4px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+        }
+
+        .hero-warning p {
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--gray-5);
+        }
+
+        .hero-warning strong {
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        /* ─── SECTION LABELS ─────────────────────── */
+        .section-label {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-family: var(--mono);
+            font-size: clamp(18px, 3vw, 28px);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 32px;
+            color: var(--white);
+        }
+
+        /* ─── 4-STEP GUIDE ───────────────────────── */
+        #steps .step-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+
+        .step {
+            border: var(--border);
+            padding: 32px;
+            position: relative;
+            margin: -1px 0 0 -1px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--black);
+        }
+
+        .step:hover {
+            background: var(--gray-1);
+            border-color: rgba(255, 255, 255, 0.2);
+            z-index: 2;
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .step-num {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .step h3 {
+            font-family: var(--mono);
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--white);
+            line-height: 1.3;
+        }
+
+        .step p {
+            font-size: 13px;
+            color: var(--gray-4);
+            line-height: 1.7;
+        }
+
+        .step p em {
+            color: var(--gray-3);
+            font-style: normal;
+            font-size: 12px;
+        }
+
+        .step-final {
+            grid-column: 1 / -1;
+            background: var(--accent-dim);
+            border-left: 3px solid var(--accent) !important;
+        }
+
+        .step-final h3 {
+            color: var(--accent);
+            font-size: 14px;
+        }
+
+        .step-final p {
+            color: var(--gray-5);
+        }
+
+        /* ─── RESOURCES ──────────────────────────── */
+        #resources .resource-list {
+            list-style: none;
+        }
+
+        .resource-item {
+            display: flex;
+            align-items: baseline;
+            gap: 16px;
+            padding: 14px 0;
+            border-bottom: var(--border-light);
+            transition: padding-left 0.15s;
+        }
+
+        .resource-item:hover {
+            padding-left: 8px;
+        }
+
+        .resource-item:last-child {
+            border-bottom: none;
+        }
+
+        .resource-item::before {
+            content: '→';
+            font-family: var(--mono);
+            font-size: 12px;
+            color: var(--accent);
+            flex-shrink: 0;
+        }
+
+        .resource-item a {
+            font-family: var(--mono);
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--white);
+            flex-shrink: 0;
+            min-width: 260px;
+        }
+
+        .resource-item a:hover {
+            color: var(--accent);
+        }
+
+        .resource-desc {
+            font-size: 12px;
+            color: var(--gray-4);
+            font-style: italic;
+        }
+
+        /* ─── RULES ──────────────────────────────── */
+        #rules .rules-box {
+            background: var(--gray-1);
+            border: var(--border);
+        }
+
+        .rule-row {
+            display: flex;
+            gap: 0;
+            border-bottom: var(--border-light);
+        }
+
+        .rule-row:last-child {
+            border-bottom: none;
+        }
+
+        .rule-num {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--accent);
+            padding: 16px 20px;
+            border-right: var(--border-light);
+            min-width: 52px;
+            display: flex;
+            align-items: flex-start;
+            padding-top: 18px;
+        }
+
+        .rule-content {
+            padding: 16px 20px;
+            flex: 1;
+        }
+
+        .rule-content strong {
+            display: block;
+            font-family: var(--mono);
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 4px;
+            letter-spacing: 0.03em;
+        }
+
+        .rule-content p {
+            font-size: 13px;
+            color: var(--gray-4);
+            line-height: 1.6;
+        }
+
+        .rule-content .rule-tag {
+            display: inline-block;
+            font-family: var(--mono);
+            font-size: 9px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+            border: 1px solid var(--accent-dim);
+            padding: 2px 7px;
+            margin-top: 8px;
+        }
+
+        /* ─── DISCLAIMER ─────────────────────────── */
+        #disclaimer .disclaimer-block {
+            border: 2px solid var(--accent);
+            padding: 40px;
+            background: var(--accent-dim);
+            text-align: center;
+        }
+
+        #disclaimer h2 {
+            font-family: var(--mono);
+            font-size: clamp(16px, 3vw, 22px);
+            font-weight: 700;
+            line-height: 1.3;
+            color: var(--white);
+            margin-bottom: 24px;
+            letter-spacing: -0.01em;
+        }
+
+        #disclaimer .disclaimer-items {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        #disclaimer .disclaimer-items li {
+            font-size: 14px;
+            color: var(--gray-5);
+            position: relative;
+            padding-left: 20px;
+        }
+
+        #disclaimer .disclaimer-items li::before {
+            content: '■';
+            color: var(--accent);
+            font-size: 8px;
+            position: absolute;
+            left: 0;
+            top: 5px;
+        }
+
+        #disclaimer .disclaimer-items li strong {
+            color: var(--white);
+        }
+
+        #disclaimer .no-sell {
+            font-family: var(--mono);
+            font-size: clamp(22px, 5vw, 42px);
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: -0.02em;
+            margin-bottom: 20px;
+            line-height: 1.1;
+        }
+
+        /* ─── SOCIAL GRID ────────────────────────── */
+        #social .social-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+
+        .social-card {
+            border: var(--border);
+            padding: 28px;
+            margin: -1px 0 0 -1px;
+            transition: background 0.15s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-card:hover {
+            background: var(--gray-1);
+        }
+
+        .social-card::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 3px;
+            height: 100%;
+            background: var(--accent);
+            transform: scaleY(0);
+            transform-origin: bottom;
+            transition: transform 0.2s;
+        }
+
+        .social-card:hover::after {
+            transform: scaleY(1);
+        }
+
+        .social-platform {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .social-card h3 {
+            font-family: var(--mono);
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 8px;
+        }
+
+        .social-card p {
+            font-size: 13px;
+            color: var(--gray-4);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .social-card a.btn {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gray-4);
+            border: 1px solid var(--gray-2);
+            padding: 6px 14px;
+            transition: all 0.15s;
+            display: inline-block;
+        }
+
+        .social-card:hover a.btn {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* ─── BLOG / POSTS ───────────────────────── */
+        #blog .post-list {
+            list-style: none;
+        }
+
+        .post-item {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: baseline;
+            gap: 24px;
+            padding: 18px 0;
+            border-bottom: var(--border-light);
+            transition: padding-left 0.15s;
+        }
+
+        .post-item:hover {
+            padding-left: 10px;
+        }
+
+        .post-item:last-child {
+            border-bottom: none;
+        }
+
+        .post-date {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--gray-3);
+            letter-spacing: 0.05em;
+            flex-shrink: 0;
+        }
+
+        .post-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--white);
+        }
+
+        .post-title:hover {
+            color: var(--accent);
+        }
+
+        .post-tag {
+            font-family: var(--mono);
+            font-size: 9px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gray-3);
+            border: 1px solid var(--gray-2);
+            padding: 2px 8px;
+            white-space: nowrap;
+        }
+
+        /* ─── FAQ ACCORDION ──────────────────────── */
+        #faq .faq-item {
+            border-bottom: var(--border-light);
+        }
+
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 0;
+            cursor: pointer;
+            font-family: var(--mono);
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--white);
+            user-select: none;
+        }
+
+        .faq-question:hover {
+            color: var(--accent);
+        }
+
+        .faq-toggle {
+            font-size: 18px;
+            color: var(--accent);
+            transition: transform 0.2s;
+            flex-shrink: 0;
+            margin-left: 20px;
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .faq-answer p {
+            font-size: 13px;
+            color: var(--gray-4);
+            line-height: 1.8;
+            padding-bottom: 18px;
+        }
+
+        .faq-item.open .faq-answer {
+            max-height: 300px;
+        }
+
+        .faq-item.open .faq-toggle {
+            transform: rotate(45deg);
+        }
+
+        .faq-item.open .faq-question {
+            color: var(--accent);
+        }
+
+        /* ─── TESTIMONIALS ───────────────────────── */
+        #testimonials .testi-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+
+        .testi-card {
+            border: var(--border);
+            padding: 24px;
+            margin: -1px 0 0 -1px;
+        }
+
+        .testi-card p {
+            font-size: 13px;
+            color: var(--gray-4);
+            line-height: 1.7;
+            margin-bottom: 16px;
+            font-style: italic;
+        }
+
+        .testi-card p::before {
+            content: '"';
+            color: var(--accent);
+        }
+
+        .testi-card p::after {
+            content: '"';
+            color: var(--accent);
+        }
+
+        .testi-author {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--gray-3);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .testi-author span {
+            color: var(--accent);
+        }
+
+        /* ─── SETUPS ─────────────────────────────── */
+        #setups .setup-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+        }
+
+        .setup-card {
+            border: var(--border);
+            padding: 32px;
+            margin: -1px 0 0 -1px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--black);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .setup-card:hover {
+            background: var(--gray-1);
+            transform: translateY(-8px);
+            border-color: rgba(255, 255, 255, 0.2);
+            z-index: 2;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .setup-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.5s;
+        }
+
+        .setup-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .setup-num {
+            font-family: var(--mono);
+            font-size: 36px;
+            font-weight: 700;
+            color: #f0f0f0;
+            line-height: 1;
+            margin-bottom: 12px;
+        }
+
+        .setup-card h3 {
+            font-family: var(--mono);
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .setup-card p {
+            font-size: 12px;
+            color: var(--gray-4);
+            line-height: 1.6;
+        }
+
+        /* ─── TICKER BANNER (Consolidated) ───────── */
+
+        .ticker-track span {
+            font-family: var(--mono);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--white);
+            padding: 0 32px;
+        }
+
+        .ticker-track span::before {
+            content: '■ ';
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes ticker {
+            /* Animation removed as TradingView provides its own scrolling */
+        }
+
+        /* ─── STAT BAR ───────────────────────────── */
+        .stat-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            border-bottom: var(--border);
+        }
+
+        .stat-item {
+            padding: 20px 28px;
+            border-right: var(--border);
+        }
+
+        .stat-item:last-child {
+            border-right: none;
+        }
+
+        .stat-num {
+            font-family: var(--mono);
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--white);
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-family: var(--mono);
+            font-size: 9px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--gray-3);
+        }
+
+        /* ─── FOOTER ─────────────────────────────── */
+        footer {
+            padding: 32px 0;
+            border-top: var(--border);
+        }
+
+        footer .inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 28px;
+        }
+
+        footer p {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--gray-3);
+            letter-spacing: 0.05em;
+        }
+
+        footer p a {
+            color: var(--gray-3);
+        }
+
+        footer p a:hover {
+            color: var(--accent);
+        }
+
+        /* ─── MOBILE ──────────────────────────────── */
+        @media (max-width: 680px) {
+            .nav-links {
+                display: none;
+            }
+
+            #steps .step-grid {
+                grid-template-columns: 1fr;
+            }
+
+            #social .social-grid {
+                grid-template-columns: 1fr;
+            }
+
+            #testimonials .testi-grid {
+                grid-template-columns: 1fr;
+            }
+
+            #setups .setup-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .stat-bar {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .post-item {
+                grid-template-columns: 1fr;
+                gap: 4px;
+            }
+
+            .resource-item a {
+                min-width: auto;
+            }
+
+            .resource-item {
+                flex-direction: column;
+                gap: 4px;
+            }
+
+            #disclaimer .disclaimer-block {
+                padding: 24px 20px;
+            }
+        }
+
+        /* ─── CASE STUDY CARDS ───────────────────── */
+        .case-study {
+            background: var(--black);
+            border: var(--border);
+            margin-bottom: 64px;
+            overflow: hidden;
+        }
+
+        .case-study-header {
+            padding: 32px;
+            border-bottom: var(--border-light);
+        }
+
+        .case-study-title {
+            font-family: var(--mono);
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 8px;
+        }
+
+        .case-study-meta {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--accent);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .case-study-body {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 0;
+        }
+
+        .case-study-info {
+            padding: 32px;
+            border-right: var(--border-light);
+        }
+
+        .case-study-chart {
+            background: #fff;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .case-study-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        @media (max-width: 850px) {
+            .case-study-body {
+                grid-template-columns: 1fr;
+            }
+
+            .case-study-info {
+                border-right: none;
+                border-bottom: var(--border-light);
+            }
+        }
+
+        /* ─── BASE BREAKOUT GALLERY ─────────────── */
+        .breakout-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .breakout-card {
+            border: var(--border);
+            background: var(--black);
+            padding: 16px;
+            transition: transform 0.15s, border-color 0.15s;
+            cursor: pointer;
+        }
+
+        .breakout-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .breakout-card h4 {
+            font-family: var(--mono);
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--white);
+        }
+
+        .breakout-card p {
+            font-size: 11px;
+            color: var(--gray-4);
+            margin-bottom: 12px;
+        }
+
+        .breakout-chart-mini {
+            height: 120px;
+            background: #fcfcfc;
+            border: var(--border-light);
+            overflow: hidden;
+        }
+
+        .cheat-sheet-img {
+            width: 100%;
+            max-width: 800px;
+            margin: 32px auto;
+            display: block;
+            border: 1px solid var(--accent);
+            padding: 4px;
+            background: var(--white);
+        }
+
+        /* ─── SPECIALIZATION DEEP DIVE ─────────── */
+        #specialization-deep-dive {
+            background: var(--gray-1);
+            padding: 100px 0;
+            border-bottom: var(--border);
+        }
+
+        .mastery-path {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin: 48px 0;
+            position: relative;
+        }
+
+        .mastery-path::before {
+            content: '';
+            position: absolute;
+            top: 24px;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--border-light);
+            z-index: 0;
+        }
+
+        .mastery-step {
+            background: var(--black);
+            border: var(--border);
+            padding: 32px 24px;
+            flex: 1;
+            z-index: 1;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .mastery-step:hover {
+            border-color: var(--accent);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .mastery-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--accent-dim);
+            color: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-family: var(--mono);
+            font-weight: 700;
+            font-size: 16px;
+            border: 1px solid var(--accent);
+        }
+
+        .mastery-step h4 {
+            font-family: var(--mono);
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .mastery-step p {
+            font-size: 13px;
+            color: var(--gray-4);
+            line-height: 1.7;
+        }
+
+        .specialist-table-wrap {
+            margin-top: 64px;
+            border: var(--border);
+            background: var(--black);
+            overflow: hidden;
+        }
+
+        .specialist-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .specialist-table th,
+        .specialist-table td {
+            padding: 24px;
+            border-bottom: var(--border-light);
+            text-align: left;
+        }
+
+        .specialist-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .specialist-table th {
+            font-family: var(--mono);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--gray-3);
+            background: var(--gray-1);
+        }
+
+        .specialist-table td {
+            font-size: 14px;
+            color: var(--gray-5);
+        }
+
+        .specialist-table .highlight {
+            color: var(--accent);
+            font-weight: 600;
+            background: var(--accent-dim);
+        }
+
+        .reps-challenge {
+            background: var(--white);
+            color: var(--black);
+            padding: 64px 40px;
+            margin-top: 80px;
+            text-align: center;
+            position: relative;
+            border: 1px solid var(--border);
+        }
+
+        .reps-challenge h3 {
+            font-family: var(--mono);
+            font-size: clamp(24px, 4vw, 32px);
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+        }
+
+        .reps-challenge p {
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--gray-5);
+            max-width: 650px;
+            margin: 0 auto 32px;
+        }
+
+        .reps-btn {
+            display: inline-block;
+            background: var(--accent);
+            color: #fff;
+            padding: 18px 36px;
+            font-family: var(--mono);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .reps-btn:hover {
+            background: var(--white);
+            color: var(--accent);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .mastery-path {
+                flex-direction: column;
+            }
+
+            .mastery-path::before {
+                display: none;
+            }
+        }
+
+        /* ─── TWEETSTORM SECTION ───────────────── */
+        #tweetstorm {
+            background: var(--black);
+            padding: 100px 0;
+            border-bottom: var(--border);
+        }
+
+        .tweet-thread {
+            max-width: 600px;
+            margin: 48px auto;
+            position: relative;
+        }
+
+        .tweet-thread::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 28px;
+            bottom: 0;
+            width: 2px;
+            background: var(--gray-2);
+            z-index: 0;
+        }
+
+        .tweet-card {
+            background: var(--black);
+            border: var(--border);
+            padding: 24px;
+            margin-bottom: 32px;
+            position: relative;
+            z-index: 1;
+            margin-left: 60px;
+            transition: all 0.2s;
+        }
+
+        .tweet-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.03);
+        }
+
+        .tweet-card::before {
+            content: '';
+            position: absolute;
+            left: -37px;
+            top: 24px;
+            width: 12px;
+            height: 12px;
+            background: var(--accent);
+            border-radius: 50%;
+            border: 4px solid var(--black);
+            box-shadow: 0 0 0 2px var(--gray-2);
+        }
+
+        .tweet-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .tweet-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-family: var(--mono);
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .tweet-user {
+            font-family: var(--sans);
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .tweet-handle {
+            font-size: 12px;
+            color: var(--gray-4);
+        }
+
+        .tweet-content {
+            font-size: 15px;
+            line-height: 1.6;
+            color: var(--gray-5);
+        }
+
+        .tweet-footer {
+            margin-top: 16px;
+            display: flex;
+            gap: 24px;
+            font-family: var(--mono);
+            font-size: 10px;
+            color: var(--gray-3);
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 600px) {
+            .tweet-thread {
+                margin-left: 0;
+            }
+
+            .tweet-thread::before {
+                left: 10px;
+            }
+
+            .tweet-card {
+                margin-left: 30px;
+            }
+
+            .tweet-card::before {
+                left: -25px;
+            }
+        }
+
+        /* ─── EP REVISITED (BLUEPRINT) ─────────── */
+        #ep-revisited {
+            background: #0f172a;
+            /* Deep Navy */
+            color: #94a3b8;
+            padding: 100px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #ep-revisited::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(56, 189, 248, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(56, 189, 248, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+        }
+
+        .blueprint-container {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 64px;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(4px);
+            position: relative;
+            z-index: 1;
+        }
+
+        .blueprint-title {
+            font-family: var(--mono);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            color: #38bdf8;
+            /* Blueprint Cyan */
+            margin-bottom: 20px;
+        }
+
+        .blueprint-header h2 {
+            font-family: var(--mono);
+            font-size: clamp(24px, 4vw, 36px);
+            font-weight: 700;
+            color: #f1f5f9;
+            margin-bottom: 32px;
+            line-height: 1.1;
+        }
+
+        .blueprint-diagram {
+            width: 100%;
+            height: auto;
+            margin: 64px 0;
+            border: 1px dashed rgba(56, 189, 248, 0.3);
+            padding: 40px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .checklist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-top: 64px;
+        }
+
+        .checklist-item {
+            border-left: 2px solid #38bdf8;
+            padding-left: 24px;
+        }
+
+        .checklist-item h4 {
+            font-family: var(--mono);
+            font-size: 13px;
+            color: #f1f5f9;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .checklist-item p {
+            font-size: 14px;
+            line-height: 1.7;
+            color: #94a3b8;
+        }
+
+        .ep-revisited-btn {
+            display: inline-block;
+            margin-top: 64px;
+            padding: 18px 36px;
+            border: 1px solid #38bdf8;
+            color: #38bdf8;
+            font-family: var(--mono);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+
+        .ep-revisited-btn:hover {
+            background: #38bdf8;
+            color: #0f172a;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+        }
+
+        }
+
+        /* ─── POSITION SIZING (DASHBOARD) ──────── */
+        #position-sizing {
+            background: var(--white);
+            padding: 100px 0;
+            border-bottom: var(--border);
+        }
+
+        .risk-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin: 48px 0;
+        }
+
+        .risk-card {
+            border: var(--border);
+            padding: 40px;
+            background: var(--black);
+            transition: all 0.3s ease;
+        }
+
+        .risk-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+        }
+
+        .risk-card h3 {
+            font-family: var(--mono);
+            font-size: 14px;
+            color: var(--white);
+            margin-bottom: 24px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+        }
+
+        .math-block {
+            background: var(--gray-1);
+            border: var(--border-light);
+            padding: 24px;
+            font-family: var(--mono);
+            font-size: 13px;
+            color: var(--gray-5);
+            margin: 24px 0;
+            line-height: 1.6;
+        }
+
+        .math-block strong {
+            color: var(--accent);
+        }
+
+        .recovery-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: var(--mono);
+            font-size: 11px;
+            margin-top: 32px;
+        }
+
+        .recovery-table th,
+        .recovery-table td {
+            padding: 16px;
+            border: var(--border-light);
+            text-align: left;
+        }
+
+        .recovery-table th {
+            background: var(--gray-1);
+            color: var(--gray-3);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .recovery-table td.danger {
+            color: var(--accent);
+            font-weight: 700;
+            background: var(--accent-dim);
+        }
+
+        @media (max-width: 850px) {
+            .risk-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ─── STOP LOSS GUIDE (TACTICAL) ───────── */
+        #stop-loss-guide {
+            background: var(--gray-1);
+            padding: 100px 0;
+            border-bottom: var(--border);
+        }
+
+        .tactical-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 48px;
+        }
+
+        .tactical-box {
+            background: var(--white);
+            border: var(--border);
+            padding: 48px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .tactical-box:hover {
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+        }
+
+        .tactical-box::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--accent);
+        }
+
+        .tactical-box h3 {
+            font-family: var(--mono);
+            font-size: 14px;
+            color: var(--black);
+            margin-bottom: 32px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .stop-type {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .stop-icon {
+            width: 28px;
+            height: 28px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-family: var(--mono);
+            font-size: 11px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .stop-content h4 {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--black);
+        }
+
+        .stop-content p {
+            font-size: 13px;
+            line-height: 1.7;
+            color: var(--gray-4);
+        }
+
+        }
+
+        /* ─── JOURNAL LESSONS (ARCHIVAL) ───────── */
+        #journal-lessons {
+            background: #faf9f6;
+            padding: 100px 0;
+            border-bottom: var(--border);
+            color: #334155;
+        }
+
+        .journal-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 64px;
+        }
+
+        .log-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            padding: 40px;
+            position: relative;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .log-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .log-date {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .log-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #0f172a;
+        }
+
+        .log-card p {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #475569;
+        }
+
+        .journal-quote {
+            grid-column: span 3;
+            text-align: center;
+            margin-top: 80px;
+            padding-top: 80px;
+            border-top: 1px dashed #cbd5e1;
+        }
+
+        .journal-quote blockquote {
+            font-size: 22px;
+            font-style: italic;
+            color: #1e293b;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        }
+
+        /* ─── HIGH TIGHT FLAG (EXPLOSIVE) ──────── */
+        #htf-setup {
+            background: #0f172a;
+            /* Deep Navy / Black */
+            padding: 100px 0;
+            border-bottom: var(--border);
+            color: #ffffff;
+        }
+
+        .htf-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 48px;
+            margin-top: 64px;
+            align-items: center;
+        }
+
+        .htf-diagram {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            position: relative;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .htf-stats {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid var(--accent);
+            padding: 40px;
+        }
+
+        .htf-stat-item {
+            margin-bottom: 24px;
+        }
+
+        .htf-stat-item h4 {
+            font-family: var(--mono);
+            font-size: 12px;
+            color: var(--accent);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .htf-stat-item p {
+            font-size: 16px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .htf-tag {
+            background: var(--accent);
+            color: #fff;
+            padding: 4px 12px;
+            font-family: var(--mono);
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .htf-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ─── MOMENTUM SCAN (TERMINAL) ────────── */
+        #momentum-scan {
+            background: #000000;
+            padding: 100px 0;
+            border-bottom: 1px solid #333;
+            color: #ffffff;
+        }
+
+        .terminal-window {
+            background: #1e1e1e;
+            border-radius: 8px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            margin-top: 48px;
+        }
+
+        .terminal-header {
+            background: #333;
+            padding: 12px 20px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .red {
+            background: #ff5f56;
+        }
+
+        .yellow {
+            background: #ffbd2e;
+        }
+
+        .green {
+            background: #27c93f;
+        }
+
+        .terminal-body {
+            padding: 32px;
+            font-family: var(--mono);
+            font-size: 13px;
+            color: #d4d4d4;
+            line-height: 1.8;
+        }
+
+        .keyword {
+            color: #569cd6;
+        }
+
+        .string {
+            color: #ce9178;
+        }
+
+        .comment {
+            color: #6a9955;
+        }
+
+        .number {
+            color: #b5cea8;
+        }
+
+        .scan-pipeline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 64px 0;
+            gap: 20px;
+        }
+
+        .pipe-step {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 24px;
+            text-align: center;
+            position: relative;
+        }
+
+        .pipe-step::after {
+            content: '→';
+            position: absolute;
+            right: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-3);
+            font-weight: 700;
+        }
+
+        .pipe-step:last-child::after {
+            content: '';
+        }
+
+        .pipe-step h4 {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--accent);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .pipe-step p {
+            font-size: 13px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        @media (max-width: 850px) {
+            .scan-pipeline {
+                flex-direction: column;
+            }
+
+            .pipe-step::after {
+                content: '↓';
+                right: auto;
+                bottom: -20px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- TICKER -->
+    <div class="ticker-wrap">
+        <!-- TradingView Widget BEGIN -->
+        <div class="tradingview-widget-container">
+            <div class="tradingview-widget-container__widget"></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async="">
+                    {
+                        "symbols": [
+                            {
+                                "proName": "INDEX:NIFTY",
+                                "title": "NIFTY 50 (LIVE)"
+                            },
+                            {
+                                "proName": "INDEX:BANKNIFTY",
+                                "title": "NIFTY BANK (LIVE)"
+                            },
+                            {
+                                "proName": "NSE:FINNIFTY",
+                                "title": "FIN SERVICES (LIVE)"
+                            },
+                            {
+                                "proName": "NSE:MIDCPNIFTY",
+                                "title": "MIDCAP SELECT (LIVE)"
+                            },
+                            {
+                                "proName": "NSE:GIFTNIFTY",
+                                "title": "GIFT NIFTY (LIVE)"
+                            },
+                            {
+                                "proName": "FOREXCOM:NSXUSD",
+                                "title": "Nasdaq 100"
+                            },
+                            {
+                                "proName": "FOREXCOM:DJI",
+                                "title": "Dow US30"
+                            },
+                            {
+                                "proName": "BITSTAMP:BTCUSD",
+                                "title": "Bitcoin"
+                            },
+                            {
+                                "proName": "TVC:GOLD",
+                                "title": "Gold"
+                            },
+                            {
+                                "proName": "TVC:SILVER",
+                                "title": "Silver"
+                            },
+                            {
+                                "proName": "COMEX:HG1!",
+                                "title": "Copper"
+                            }
+                        ],
+                            "showSymbolLogo": true,
+                                "colorTheme": "dark",
+                                    "isTransparent": false,
+                                        "displayMode": "regular",
+                                            "locale": "en"
+                    }
+                </script>
+        </div>
+        <!-- TradingView Widget END -->
+    </div>
+
+    <!-- NAV -->
+    <nav id="nav">
+        <div class="inner">
+            <div class="nav-logo">JAI SINGH TANK</div>
+            <ul class="nav-links">
+                <li><a href="index.html#hero">Home</a></li>
+                <li class="dropdown">
+                    <a href="blog.html#blog">Blog</a>
+                    <ul class="dropdown-content">
+                        <li><a href="blog.html#specialization-deep-dive">Deep Specialization</a></li>
+                        <li><a href="blog.html#tweetstorm">The Tweetstorm</a></li>
+                        <li><a href="blog.html#ep-revisited">Episodic Pivot</a></li>
+                        <li><a href="blog.html#position-sizing">Position Sizing</a></li>
+                        <li><a href="blog.html#stop-loss-guide">Stop Loss Guide</a></li>
+                        <li><a href="blog.html#journal-lessons">Trading Journal</a></li>
+                        <li><a href="blog.html#htf-setup">High Tight Flag</a></li>
+                        <li><a href="blog.html#momentum-scan">Momentum Scan</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="setups.html#setups">Setups</a>
+                    <ul class="dropdown-content">
+                        <li><a href="blog.html#ep-revisited">Episodic Pivot (EP)</a></li>
+                        <li><a href="blog.html#htf-setup">High Tight Flag (HTF)</a></li>
+                        <li><a href="setups.html#short-squeeze">Short Squeeze</a></li>
+                        <li><a href="setups.html#ipo-base">IPO Base Breakout</a></li>
+                        <li><a href="blog.html#momentum-scan">Momentum Scan</a></li>
+                    </ul>
+                </li>
+                <li><a href="testimonials.html#testimonials">Testimonials</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="resources.html#resources">Resources</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- STAT BAR -->
+    
+
+    <!-- HERO -->
+    
+
+
+
+    <!-- 4-STEP GUIDE -->
+    
+
+    <!-- RESOURCES -->
+    
+
+    <!-- RULES -->
+    
+
+    <!-- DISCLAIMER -->
+    
+
+    <!-- SOCIAL -->
+    
+
+    <!-- SETUPS -->
+    
+
+
+
+
+    <!-- TESTIMONIALS -->
+    
+
+    <!-- EP DEEP DIVE -->
+    
+
+    <!-- BASE BREAKOUTS -->
+    
+
+    <!-- BULL FLAGS -->
+    
+
+    <!-- HTF -->
+    
+
+    <!-- SHORT SQUEEZE -->
+    
+
+    <!-- IPO BASE -->
+    
+
+    <!-- LIVE NSE MOMENTUM -->
+    
+
+    <!-- RESOURCES -->
+    
+
+    <!-- FAQ -->
+    <section id="faq">
+        <div class="container">
+            <div class="section-label">// Frequently Asked</div>
+            <div class="section-title">About Me &amp; FAQ</div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    Who is Jai Singh Tank?
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>I am a momentum trader with 4+ years of active experience in the Indian markets.
+                        I started like most—chasing tips and hot tickers—before realizing that the only way to win is
+                        through
+                        a repeatable, mathematical process. Today, I specialize in Episodic Pivots and High Tight Flags.
+                        This site is my way of documenting what works, so you don't have to spend years making the same
+                        mistakes I did.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    Can I pay you for 1-on-1 coaching or mentorship?
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>No. I don't offer paid coaching, mentorship, or any paid
+                        service whatsoever.
+                        Everything I teach is on this site, the YouTube channel, and
+                        the streams. If you've consumed
+                        all of it and still have questions, the community Discord is
+                        the right place to ask.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    What broker/platform do you use?
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>I've covered this in detail in the blog and on stream.
+                        Search the archive before asking.
+                        What works for me at my account size may not be appropriate
+                        for your situation. Due diligence is your job.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    How long did it take you to become consistently profitable?
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Several years of consistent losses before things clicked.
+                        This is normal. Anyone who tells
+                        you otherwise is selling something. Read my full story in
+                        the About section and the ChatWithTraders interview.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    What account size do I need to trade your setups?
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>The setups work at any account size conceptually. The
+                        position sizing and risk management
+                        need to be adapted to your specific situation. Do not risk
+                        more than you can afford to lose.
+                        I am not a financial advisor. Nothing here is financial advice.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    Do you take on affiliates or sponsored content?
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>No. I don't do affiliate deals, sponsored posts, or paid
+                        promotions of any kind.
+                        Everything I recommend I use or have used myself. There is
+                        no financial incentive behind any recommendation I make.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    I found someone claiming to sell your alerts or course. What
+                    should I do?
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Report and block them. They are scammers using my name. I
+                        do not sell anything.
+                        I never have. I never will. If you paid someone claiming to
+                        be me or affiliated with me, I am sorry — but I have no control over
+                        that and no ability to help you recover funds.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BLOG -->
+    
+    <br>
+    <!-- SPECIALIZATION DEEP DIVE -->
+    
+
+
+    
+
+    <!-- TWEETSTORM -->
+    
+
+    <!-- EP REVISITED -->
+    
+
+
+    
+
+    <!-- POSITION SIZING -->
+    
+
+    <br>
+    <br>
+
+    <!-- STOP LOSS GUIDE -->
+    
+
+    
+
+    <!-- JOURNAL LESSONS -->
+    
+
+    
+
+    <!-- HIGH TIGHT FLAG -->
+    
+
+    
+
+    <!-- MOMENTUM SCAN -->
+    
+
+    <!-- RED HOT BUNDLE -->
+    
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="inner">
+            <p>© 2026 <a href="#">JAI SINGH TANK</a>. Nothing here is financial
+                advice. Trade at your own risk.</p>
+            <p>Built with <a href="#">zero JavaScript frameworks</a> and pure
+                stubbornness.</p>
+        </div>
+    </footer>
+
+    <script>
+        // FAQ accordion
+        document.querySelectorAll('.faq-question').forEach(q => {
+            q.addEventListener('click', () => {
+                const item = q.closest('.faq-item');
+                const isOpen = item.classList.contains('open');
+                document.querySelectorAll('.faq-item').forEach(i =>
+                    i.classList.remove('open'));
+                if (!isOpen) item.classList.add('open');
+            });
+        });
+    </script>
+
+
+</body></html>
