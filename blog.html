@@ -1970,6 +1970,12 @@
                 content: ''; /* Remove arrow on mobile since it's always open */
             }
         }
+
+        @media (max-width: 680px) {
+            .nav-links li.dropdown .dropdown-content {
+                display: none !important; /* Remove dropdown items entirely from mobile menu */
+            }
+        }
 </style>
 </head>
 
